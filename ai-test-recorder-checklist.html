@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Test Recorder Checklist — A Practitioner's Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --bg-card: #faf8f3;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --ink-muted: #8a8580;
+    --accent: #d94f1e;
+    --accent-soft: #f5d4c5;
+    --line: #1a1a1a;
+    --line-soft: #d6d0c4;
+    --must: #8b1a0e;
+    --nice: #4a6741;
+    --code-bg: #1a1a1a;
+    --code-text: #f4f1ea;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter Tight', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-soft);
+    border-radius: 4px;
+    border: 2px solid var(--bg);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-muted);
+  }
+
+  /* Firefox */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-soft) var(--bg);
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+  }
+
+  .container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+    background: var(--bg);
+    position: relative;
+  }
+
+  .header-grid {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .header-meta {
+    text-align: center;
+    color: var(--ink-soft);
+  }
+
+  .header-edition {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '';
+    height: 1px;
+    background: var(--accent);
+    flex: 0 0 40px;
+  }
+
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(48px, 8vw, 112px);
+    line-height: 0.95;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(18px, 2vw, 24px);
+    line-height: 1.5;
+    max-width: 720px;
+    color: var(--ink-soft);
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-number {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+  }
+
+  /* ===== INTRO ===== */
+  .intro {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+  }
+
+  .intro-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    padding-top: 12px;
+    border-top: 2px solid var(--accent);
+    align-self: start;
+  }
+
+  .intro-text {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.55;
+    font-weight: 300;
+    color: var(--ink);
+  }
+
+  .intro-text p + p {
+    margin-top: 24px;
+  }
+
+  .intro-text strong {
+    font-weight: 600;
+    background: linear-gradient(transparent 60%, var(--accent-soft) 60%);
+  }
+
+  /* ===== LEGEND ===== */
+  .legend {
+    padding: 40px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .legend-inner {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .legend-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-muted);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .legend-badge {
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-weight: 700;
+    font-size: 10px;
+  }
+
+  .legend-badge.must {
+    background: var(--must);
+    color: #fff;
+  }
+
+  .legend-badge.nice {
+    background: var(--nice);
+    color: #fff;
+  }
+
+  /* ===== BLOCKS ===== */
+  .blocks {
+    padding: 80px 0;
+  }
+
+  .block {
+    margin-bottom: 80px;
+    position: relative;
+  }
+
+  .block:last-child {
+    margin-bottom: 0;
+  }
+
+  .block-header {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid var(--ink);
+    align-items: end;
+  }
+
+  .block-number {
+    font-family: 'Fraunces', serif;
+    font-size: 96px;
+    line-height: 0.85;
+    font-weight: 300;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144;
+  }
+
+  .block-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .block-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-muted);
+  }
+
+  .block-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.05;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .block-description {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-weight: 300;
+    margin-top: 12px;
+    max-width: 640px;
+  }
+
+  .items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+  }
+
+  .item {
+    background: var(--bg-card);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    transition: background 0.2s ease;
+  }
+
+  .item:hover {
+    background: #fff;
+  }
+
+  .item-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .item-title {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink);
+    flex: 1;
+  }
+
+  .item-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .item-badge.must {
+    background: var(--must);
+    color: #fff;
+  }
+
+  .item-badge.nice {
+    background: var(--nice);
+    color: #fff;
+  }
+
+  .item-description {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .item-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-muted);
+    padding: 2px 6px;
+    background: var(--bg);
+    border: 1px solid var(--line-soft);
+    border-radius: 2px;
+  }
+
+  /* ===== CODE COMPARISON ===== */
+  .code-comparison {
+    margin: 60px 0;
+    padding: 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--line-soft);
+    position: relative;
+  }
+
+  .code-comparison-label {
+    position: absolute;
+    top: -12px;
+    left: 24px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+  }
+
+  .code-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .code-block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .code-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    display: inline-block;
+    align-self: flex-start;
+    font-weight: 700;
+  }
+
+  .code-title.bad {
+    background: var(--must);
+    color: #fff;
+  }
+
+  .code-title.good {
+    background: var(--nice);
+    color: #fff;
+  }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-x: auto;
+    border-radius: 2px;
+    flex: 1;
+  }
+
+  pre .comment { color: #8a8580; font-style: italic; }
+  pre .keyword { color: #ff9a76; }
+  pre .string { color: #c5e1a5; }
+  pre .function { color: #ffd180; }
+
+  /* ===== ANTIPATTERNS ===== */
+  .antipatterns {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 80px 0;
+    margin-top: 80px;
+  }
+
+  .antipatterns .container {
+    max-width: 1240px;
+  }
+
+  .antipatterns-header {
+    margin-bottom: 60px;
+  }
+
+  .antipatterns-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .antipatterns-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    max-width: 900px;
+  }
+
+  .antipatterns-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .red-flags {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 32px;
+  }
+
+  .red-flag {
+    border-left: 3px solid var(--accent);
+    padding: 4px 0 4px 24px;
+  }
+
+  .red-flag-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .red-flag-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #c4bfb5;
+  }
+
+  /* ===== CLOSING ===== */
+  .closing {
+    padding: 100px 0;
+    text-align: center;
+    border-top: 1px solid var(--line);
+  }
+
+  .closing-mark {
+    font-family: 'Fraunces', serif;
+    font-size: 96px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+
+  .closing-text {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-style: italic;
+    font-weight: 300;
+    max-width: 720px;
+    margin: 0 auto 16px;
+    line-height: 1.4;
+  }
+
+  .closing-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-muted);
+    margin-top: 32px;
+  }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--line-soft);
+    z-index: 100;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+
+  /* ===== FILTER & PROGRESS CONTROLS ===== */
+  .legend-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .filter-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 6px 14px;
+    border: 1px solid var(--line-soft);
+    background: transparent;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .filter-btn.active {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  .reset-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 6px 14px;
+    border: 1px solid var(--must);
+    background: transparent;
+    color: var(--must);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+  }
+
+  .reset-btn:hover {
+    background: var(--must);
+    color: #fff;
+  }
+
+  .progress-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+
+  .progress-text span {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ===== INTERACTIVE ITEMS ===== */
+  .item {
+    cursor: pointer;
+    user-select: none;
+    border-left: 3px solid transparent;
+  }
+
+  .item.checked {
+    border-left-color: var(--nice);
+    opacity: 0.65;
+  }
+
+  .item.checked .item-title {
+    color: var(--ink-muted);
+  }
+
+  .item-check {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--line-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .item-check::after {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 10px;
+    border: solid transparent;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    transition: border-color 0.2s ease;
+  }
+
+  .item.checked .item-check {
+    border-color: var(--nice);
+    background: var(--nice);
+  }
+
+  .item.checked .item-check::after {
+    border-color: #fff;
+  }
+
+  .item.hidden {
+    display: none;
+  }
+
+  /* ===== BLOCK NAV ===== */
+  .block-nav {
+    position: fixed;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .block-nav.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .block-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .block-nav-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    width: 20px;
+    text-align: center;
+    transition: color 0.2s ease;
+  }
+
+  .block-nav-label {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 11px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    transition: all 0.25s ease;
+  }
+
+  .block-nav:hover .block-nav-label {
+    opacity: 1;
+    max-width: 200px;
+  }
+
+  .block-nav-item:hover {
+    background: var(--bg-card);
+  }
+
+  .block-nav-item:hover .block-nav-num {
+    color: var(--ink);
+  }
+
+  .block-nav-item.active .block-nav-num {
+    color: var(--accent);
+  }
+
+  .block-nav-item.active .block-nav-label {
+    color: var(--ink);
+  }
+
+  /* ===== MOBILE NAV ===== */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: var(--bg);
+    border-top: 1px solid var(--line-soft);
+    padding: 8px 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 2px;
+    scrollbar-width: none;
+  }
+
+  .mobile-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-nav-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-nav-item.active {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1400px) {
+    .block-nav {
+      left: 8px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container { padding: 0 20px; }
+    .header-grid { grid-template-columns: 1fr; gap: 12px; text-align: center; }
+    .hero { padding: 48px 0 40px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .stat-number { font-size: 36px; }
+    .intro { padding: 48px 0; }
+    .intro-grid { grid-template-columns: 1fr; gap: 24px; }
+    .intro-text { font-size: 18px; }
+    .blocks { padding: 48px 0; }
+    .block { margin-bottom: 56px; }
+    .block-header { grid-template-columns: 1fr; gap: 12px; }
+    .block-number { font-size: 64px; }
+    .items { grid-template-columns: 1fr; }
+    .code-grid { grid-template-columns: 1fr; }
+    .legend-inner { gap: 16px; flex-direction: column; align-items: flex-start; }
+    .legend-controls { margin-left: 0; flex-wrap: wrap; }
+    .antipatterns { padding: 48px 0; }
+    .red-flags { grid-template-columns: 1fr; }
+    .block-nav { display: none; }
+    .mobile-nav { display: flex; }
+    .closing { padding-bottom: 80px; }
+    .code-comparison { padding: 24px 16px; margin: 40px 0; }
+    pre { font-size: 11px; padding: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-bar-fill" id="progressBar"></div></div>
+
+<nav class="block-nav" id="blockNav">
+  <a class="block-nav-item" href="#block-01"><span class="block-nav-num">01</span><span class="block-nav-label">Code Quality</span></a>
+  <a class="block-nav-item" href="#block-02"><span class="block-nav-num">02</span><span class="block-nav-label">Waits & Async</span></a>
+  <a class="block-nav-item" href="#block-03"><span class="block-nav-num">03</span><span class="block-nav-label">Complex Structures</span></a>
+  <a class="block-nav-item" href="#block-04"><span class="block-nav-num">04</span><span class="block-nav-label">User Interaction</span></a>
+  <a class="block-nav-item" href="#block-05"><span class="block-nav-num">05</span><span class="block-nav-label">Test Data</span></a>
+  <a class="block-nav-item" href="#block-06"><span class="block-nav-num">06</span><span class="block-nav-label">Network & Mocks</span></a>
+  <a class="block-nav-item" href="#block-07"><span class="block-nav-num">07</span><span class="block-nav-label">Flow & Assertions</span></a>
+  <a class="block-nav-item" href="#block-08"><span class="block-nav-num">08</span><span class="block-nav-label">Execution & Scale</span></a>
+  <a class="block-nav-item" href="#block-09"><span class="block-nav-num">09</span><span class="block-nav-label">Security & Privacy</span></a>
+</nav>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a class="mobile-nav-item" href="#block-01">01</a>
+  <a class="mobile-nav-item" href="#block-02">02</a>
+  <a class="mobile-nav-item" href="#block-03">03</a>
+  <a class="mobile-nav-item" href="#block-04">04</a>
+  <a class="mobile-nav-item" href="#block-05">05</a>
+  <a class="mobile-nav-item" href="#block-06">06</a>
+  <a class="mobile-nav-item" href="#block-07">07</a>
+  <a class="mobile-nav-item" href="#block-08">08</a>
+  <a class="mobile-nav-item" href="#block-09">09</a>
+</nav>
+
+<header>
+  <div class="container">
+    <div class="header-grid">
+      <div>QA Field Notes</div>
+      <div class="header-meta"></div>
+      <div class="header-edition"></div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">A Practitioner's Guide</div>
+    <h1 class="hero-title">
+      What a <em>good</em><br>AI test recorder<br>must do.
+    </h1>
+    <p class="hero-subtitle">
+      A field guide for QA engineers evaluating the next generation of AI-powered test recording tools — and a checklist for the vendors building them.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-number">9</div>
+        <div class="stat-label">Capability Blocks</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">43</div>
+        <div class="stat-label">Concrete Criteria</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Priority Tiers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Tolerance for Flaky Tests</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="intro">
+  <div class="container">
+    <div class="intro-grid">
+      <div class="intro-label">Why this matters</div>
+      <div class="intro-text">
+        <p>This checklist grew out of hands-on experience with AI test recorders on real projects — from simple forms to complex SPAs with shadow DOM, iframes, and third-party integrations. Each criterion reflects <strong>a practical concern</strong>, not a theoretical one.</p>
+        <p>I organized everything into 9 capability blocks with two priority tiers: <strong>Must</strong> (this is a must-have for launch) and <strong>Nice</strong> (what separates a good tool from an excellent one). Use it to evaluate vendors, guide internal tooling decisions, or benchmark your own recorder.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="legend">
+  <div class="container">
+    <div class="legend-inner">
+      <div class="legend-title">Priority Legend</div>
+      <div class="legend-item">
+        <span class="legend-badge must">Must</span>
+        <span>This is a must-have for launch.</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-badge nice">Nice</span>
+        <span>Differentiates good from excellent.</span>
+      </div>
+      <div class="legend-controls">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="must">Must</button>
+        <button class="filter-btn" data-filter="nice">Nice</button>
+        <span class="progress-text"><span id="checkedCount">0</span> / <span id="totalCount">0</span> checked</span>
+        <button class="reset-btn" id="resetBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="blocks">
+  <div class="container">
+
+    <!-- BLOCK 01 -->
+    <div class="block" id="block-01">
+      <div class="block-header">
+        <div class="block-number">01</div>
+        <div class="block-meta">
+          <div class="block-eyebrow">Foundation</div>
+          <h2 class="block-title">Code Quality</h2>
+          <p class="block-description">Readable, maintainable code is the foundation everything else builds on.</p>
+        </div>
+      </div>
+      <div class="items">
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Stable selector strategy</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Prioritize semantic locators: role → label → test-id → text. Never <code>nth-child</code>, never positional XPath, never auto-generated CSS-in-JS hashes.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Page Object Model adherence</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Generated tests should follow POM, Screenplay, or fixture-based architecture — not 200-line linear scripts.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">AAA structure</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Arrange, Act, Assert visually and structurally separated within each test.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Readable naming</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Meaningful variable and function names. No magic numbers. Logical block separation.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Automatic helper extraction</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">Common steps like login or navigation extracted into reusable helpers, not duplicated across tests.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Project-level DRY</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">If ten tests share the same setup, the recorder proposes a fixture instead of cloning the code.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CODE COMPARISON 1 -->
+    <div class="code-comparison">
+      <div class="code-comparison-label">Specimen — Selector Strategy</div>
+      <div class="code-grid">
+        <div class="code-block">
+          <div class="code-title bad">What weak recorders generate</div>
+<pre><span class="comment">// Breaks on any DOM change</span>
+<span class="keyword">await</span> page.<span class="function">click</span>(
+  <span class="string">'div.css-1a2b3c4 > span:nth-child(3) > button'</span>
+);
+
+<span class="keyword">await</span> page.<span class="function">click</span>(
+  <span class="string">'//*[@id="root"]/div/div[2]/form/button'</span>
+);</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-title good">What a good recorder generates</div>
+<pre><span class="comment">// Survives refactors. Reads like intent.</span>
+<span class="keyword">await</span> page
+  .<span class="function">getByRole</span>(<span class="string">'button'</span>, { name: <span class="string">'Submit order'</span> })
+  .<span class="function">click</span>();
+
+<span class="keyword">await</span> page
+  .<span class="function">getByTestId</span>(<span class="string">'checkout-confirm'</span>)
+  .<span class="function">click</span>();</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCK 02 -->
+    <div class="block" id="block-02">
+      <div class="block-header">
+        <div class="block-number">02</div>
+        <div class="block-meta">
+          <div class="block-eyebrow">Reliability</div>
+          <h2 class="block-title">Waits & Async</h2>
+          <p class="block-description">The single largest source of flaky tests — and the area where recorders most need to get it right.</p>
+        </div>
+      </div>
+      <div class="items">
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">No <code>waitForTimeout</code></div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Hard-coded sleeps are an antipattern. They make tests slow when they pass and unreliable when they fail.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Element state waits</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description"><code>toBeVisible</code>, <code>toBeEnabled</code>, <code>toHaveText</code> — wait for readiness, not just presence.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Network response waits</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description"><code>waitForResponse</code> filtered by URL and status, before asserting downstream state.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">URL & navigation waits</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Detect SPA route changes and full navigations correctly.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Custom condition waits</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description"><code>waitForFunction</code> for non-trivial cases — animations, third-party widgets, timing-dependent UI.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CODE COMPARISON 2 -->
+    <div class="code-comparison">
+      <div class="code-comparison-label">Specimen — Waits & Async</div>
+      <div class="code-grid">
+        <div class="code-block">
+          <div class="code-title bad">Fragile: hard-coded sleep</div>
+<pre><span class="comment">// Slow when it works, flaky when it doesn't</span>
+<span class="keyword">await</span> page.<span class="function">click</span>(<span class="string">'#submit'</span>);
+<span class="keyword">await</span> page.<span class="function">waitForTimeout</span>(<span class="string">3000</span>);
+<span class="keyword">await</span> <span class="function">expect</span>(page.<span class="function">locator</span>(<span class="string">'.success'</span>))
+  .<span class="function">toBeVisible</span>();</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-title good">Robust: event-driven wait</div>
+<pre><span class="comment">// Waits only as long as needed</span>
+<span class="keyword">await</span> page.<span class="function">click</span>(<span class="string">'#submit'</span>);
+<span class="keyword">await</span> page.<span class="function">waitForResponse</span>(
+  resp => resp.<span class="function">url</span>().<span class="function">includes</span>(<span class="string">'/api/orders'</span>)
+    && resp.<span class="function">status</span>() === <span class="string">200</span>
+);
+<span class="keyword">await</span> <span class="function">expect</span>(page.<span class="function">locator</span>(<span class="string">'.success'</span>))
+  .<span class="function">toBeVisible</span>();</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCK 03 -->
+    <div class="block" id="block-03">
+      <div class="block-header">
+        <div class="block-number">03</div>
+        <div class="block-meta">
+          <div class="block-eyebrow">Edge of the DOM</div>
+          <h2 class="block-title">Complex Structures</h2>
+          <p class="block-description">Modern apps use iframes, shadow roots, and canvas — a good recorder should handle all of them.</p>
+        </div>
+      </div>
+      <div class="items">
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Shadow DOM piercing</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Selectors must cross shadow root boundaries — critical for web components, Stripe Elements, design systems.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Iframe context switching</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Automatic <code>frameLocator</code> usage. The recorder should detect iframe entry without manual annotation.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Canvas & WebGL interaction</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">At minimum, coordinate-based interaction for maps, charts, editors, design tools.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Virtualized lists</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">React-window, virtual scroll, infinite lists — items not in DOM until scrolled.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCK 04 -->
+    <div class="block" id="block-04">
+      <div class="block-header">
+        <div class="block-number">04</div>
+        <div class="block-meta">
+          <div class="block-eyebrow">Inputs</div>
+          <h2 class="block-title">User Interaction</h2>
+          <p class="block-description">Beyond clicks — keyboard, uploads, dialogs, and multi-tab scenarios matter just as much.</p>
+        </div>
+      </div>
+      <div class="items">
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Keyboard handling</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Hotkeys, key combinations (Ctrl+Shift+...), sequential input, Tab navigation, Escape, Enter.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Modals & native dialogs</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Custom modals plus native browser <code>alert</code>, <code>confirm</code>, <code>prompt</code> — different mechanics, both required.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Toasts & flash messages</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Catch and assert ephemeral notifications before they auto-dismiss (typically 3–5 seconds).</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">File upload & download</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Verify downloaded file name, size, and content. Handle multi-file uploads and drag-to-upload zones.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Clipboard operations</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">Read and write clipboard content for copy-paste flows.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Multiple browser contexts</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Multi-user scenarios (chat, collaboration), new tabs, incognito sessions, isolated cookies.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCK 05 -->
+    <div class="block" id="block-05">
+      <div class="block-header">
+        <div class="block-number">05</div>
+        <div class="block-meta">
+          <div class="block-eyebrow">State</div>
+          <h2 class="block-title">Test Data</h2>
+          <p class="block-description">Bad data handling produces tests that conflict, cascade-fail, and can't run in parallel.</p>
+        </div>
+      </div>
+      <div class="items">
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Centralized authentication</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description"><code>storageState</code> or equivalent — never log in through the UI in every test.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Data-driven parameterization</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">One scenario, multiple data sets. Avoid copy-pasting the same test with different inputs.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Unique data generation</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Timestamps, faker, UUIDs — so parallel runs don't collide on the same email or order ID.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Scoped fixtures</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">Test, worker, and global scope — match data lifecycle to test lifecycle.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Setup & teardown via API</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Faster and more reliable than reaching the same state through the UI.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Automatic cleanup</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Hooks or isolation strategies that prevent test pollution between runs.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Fixture import & export</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">Load test data from JSON/CSV, export state snapshots for debugging.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CODE COMPARISON 3 -->
+    <div class="code-comparison">
+      <div class="code-comparison-label">Specimen — Authentication & Data</div>
+      <div class="code-grid">
+        <div class="code-block">
+          <div class="code-title bad">Slow: UI login in every test</div>
+<pre><span class="comment">// Repeated in every single test file</span>
+test(<span class="string">'create order'</span>, <span class="keyword">async</span> ({ page }) => {
+  <span class="keyword">await</span> page.<span class="function">goto</span>(<span class="string">'/login'</span>);
+  <span class="keyword">await</span> page.<span class="function">fill</span>(<span class="string">'#email'</span>, <span class="string">'admin@test.com'</span>);
+  <span class="keyword">await</span> page.<span class="function">fill</span>(<span class="string">'#password'</span>, <span class="string">'password123'</span>);
+  <span class="keyword">await</span> page.<span class="function">click</span>(<span class="string">'#login-btn'</span>);
+  <span class="comment">// ... actual test starts here</span>
+});</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-title good">Fast: stored auth state + unique data</div>
+<pre><span class="comment">// Auth once, reuse across all tests</span>
+test.<span class="function">use</span>({
+  storageState: <span class="string">'auth/admin.json'</span>
+});
+
+test(<span class="string">'create order'</span>, <span class="keyword">async</span> ({ page }) => {
+  <span class="keyword">const</span> orderId = <span class="function">randomUUID</span>();
+  <span class="keyword">await</span> page.<span class="function">goto</span>(<span class="string">`/orders/new?ref=${orderId}`</span>);
+  <span class="comment">// No login, no collisions in parallel</span>
+});</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCK 06 -->
+    <div class="block" id="block-06">
+      <div class="block-header">
+        <div class="block-number">06</div>
+        <div class="block-meta">
+          <div class="block-eyebrow">Boundaries</div>
+          <h2 class="block-title">Network & Mocks</h2>
+          <p class="block-description">Controlling network boundaries makes tests faster, more predictable, and independent of backend availability.</p>
+        </div>
+      </div>
+      <div class="items">
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Network request interception</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description"><code>page.route</code> for selectively mocking endpoints while letting others pass through.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Error response mocking</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">500s, timeouts, empty responses, malformed payloads — edge cases you can't reproduce on staging.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Time, geolocation, permissions</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">Mock browser APIs for deterministic tests of time-sensitive or location-aware features.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">API calls from tests</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">For setup, teardown, and verifying backend state without going through the UI.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">External test service integration</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">Mailcatcher, Mailhog, SMS interceptors, webhook receivers — verify side effects outside the app.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CODE COMPARISON 4 -->
+    <div class="code-comparison">
+      <div class="code-comparison-label">Specimen — Network Mocking</div>
+      <div class="code-grid">
+        <div class="code-block">
+          <div class="code-title bad">Untestable: depends on live backend</div>
+<pre><span class="comment">// Fails if staging is down or data changes</span>
+<span class="keyword">await</span> page.<span class="function">goto</span>(<span class="string">'/dashboard'</span>);
+<span class="keyword">await</span> <span class="function">expect</span>(
+  page.<span class="function">locator</span>(<span class="string">'.revenue'</span>)
+).<span class="function">toHaveText</span>(<span class="string">'$12,340'</span>);
+<span class="comment">// What if the amount changes tomorrow?</span></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-title good">Controlled: mock the API response</div>
+<pre><span class="keyword">await</span> page.<span class="function">route</span>(<span class="string">'**/api/revenue'</span>, route =>
+  route.<span class="function">fulfill</span>({
+    json: { total: <span class="string">12340</span>, currency: <span class="string">'USD'</span> }
+  })
+);
+
+<span class="keyword">await</span> page.<span class="function">goto</span>(<span class="string">'/dashboard'</span>);
+<span class="keyword">await</span> <span class="function">expect</span>(
+  page.<span class="function">locator</span>(<span class="string">'.revenue'</span>)
+).<span class="function">toHaveText</span>(<span class="string">'$12,340'</span>);</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCK 07 -->
+    <div class="block" id="block-07">
+      <div class="block-header">
+        <div class="block-number">07</div>
+        <div class="block-meta">
+          <div class="block-eyebrow">Logic</div>
+          <h2 class="block-title">Flow & Assertions</h2>
+          <p class="block-description">Recorders capture a single happy path by default — the question is how gracefully they handle everything that isn't one.</p>
+        </div>
+      </div>
+      <div class="items">
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Conditional logic</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">If/else in scenarios — for example, dismissing a cookie banner only when it appears. Most recorders capture a single path; branching is typically added by hand.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Loops</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">Iterate over lists, repeated UI elements, dynamic table rows.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Try/catch for optional steps</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">Gracefully handle steps that may or may not be present depending on user state.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Meaningful assertions</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Not just "element is visible." Assert text content, attribute values, element counts, computed states. The recorder should propose <em>what</em> to verify, based on context.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Soft assertions</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">Collect multiple checks in one test without failing on the first mismatch.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CODE COMPARISON 5 -->
+    <div class="code-comparison">
+      <div class="code-comparison-label">Specimen — Assertions</div>
+      <div class="code-grid">
+        <div class="code-block">
+          <div class="code-title bad">Weak: only checks visibility</div>
+<pre><span class="comment">// Passes even if the content is wrong</span>
+<span class="keyword">await</span> <span class="function">expect</span>(
+  page.<span class="function">locator</span>(<span class="string">'.order-confirmation'</span>)
+).<span class="function">toBeVisible</span>();</pre>
+        </div>
+        <div class="code-block">
+          <div class="code-title good">Strong: verifies actual state</div>
+<pre><span class="keyword">const</span> confirmation = page.<span class="function">locator</span>(
+  <span class="string">'.order-confirmation'</span>
+);
+<span class="keyword">await</span> <span class="function">expect</span>(confirmation)
+  .<span class="function">toContainText</span>(<span class="string">'Order #'</span>);
+<span class="keyword">await</span> <span class="function">expect</span>(confirmation.<span class="function">locator</span>(<span class="string">'.status'</span>))
+  .<span class="function">toHaveText</span>(<span class="string">'Confirmed'</span>);
+<span class="keyword">await</span> <span class="function">expect</span>(confirmation.<span class="function">locator</span>(<span class="string">'.items'</span>))
+  .<span class="function">toHaveCount</span>(<span class="string">3</span>);</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCK 08 -->
+    <div class="block" id="block-08">
+      <div class="block-header">
+        <div class="block-number">08</div>
+        <div class="block-meta">
+          <div class="block-eyebrow">Operations</div>
+          <h2 class="block-title">Execution & Scale</h2>
+          <p class="block-description">Most execution concerns live in the runner and CI config. What matters here is that the generated code plays well with them.</p>
+        </div>
+      </div>
+      <div class="items">
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Test isolation</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Each test must be independent. No shared state, no execution order dependencies, no leftover data from previous runs.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Cross-browser compatibility</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Generated code uses APIs and selectors that work across Chromium, Firefox, and WebKit — not browser-specific quirks.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Responsive & device emulation</div>
+            <span class="item-badge nice">Nice</span>
+          </div>
+          <p class="item-description">Support for viewport switching and mobile device profiles when recording — not just desktop-only capture.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCK 09 -->
+    <div class="block" id="block-09">
+      <div class="block-header">
+        <div class="block-number">09</div>
+        <div class="block-meta">
+          <div class="block-eyebrow">Responsibility</div>
+          <h2 class="block-title">Security & Privacy</h2>
+          <p class="block-description">Test recordings capture everything. That's a feature and a liability.</p>
+        </div>
+      </div>
+      <div class="items">
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">Secrets management</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Integration with vaults and environment variables. Credentials never in plain text.</p>
+        </div>
+        <div class="item">
+          <div class="item-header">
+            <div class="item-title">GDPR & data residency</div>
+            <span class="item-badge must">Must</span>
+          </div>
+          <p class="item-description">Region-specific data storage options for compliance with EU and other regulations.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="antipatterns">
+  <div class="container">
+    <div class="antipatterns-header">
+      <div class="antipatterns-eyebrow">Red Flags</div>
+      <h2 class="antipatterns-title">Signs worth <em>paying attention to.</em></h2>
+    </div>
+    <div class="red-flags">
+      <div class="red-flag">
+        <h3 class="red-flag-title">Demo runs only on a static landing page</h3>
+        <p class="red-flag-text">Real apps have async loading, modals, and auth. It's important to see how the tool performs on your actual application, not just a simplified example.</p>
+      </div>
+      <div class="red-flag">
+        <h3 class="red-flag-title">Generated code uses <code>nth-child</code> or absolute XPath</h3>
+        <p class="red-flag-text">This is a fundamental design failure. The tool will produce flaky tests forever.</p>
+      </div>
+      <div class="red-flag">
+        <h3 class="red-flag-title">No way to inspect or edit the generated code</h3>
+        <p class="red-flag-text">Pure visual editors mean you can't debug, refactor, or escape the platform.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="container">
+    <div class="closing-mark">§</div>
+    <p class="closing-text">Use this checklist not as a verdict, but as a compass.</p>
+    <div class="closing-meta">QA Field Notes</div>
+  </div>
+</section>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'ai-checklist-checked';
+  const items = document.querySelectorAll('.blocks .item');
+  const progressBar = document.getElementById('progressBar');
+  const checkedCountEl = document.getElementById('checkedCount');
+  const totalCountEl = document.getElementById('totalCount');
+  const heroStatNumber = document.querySelector('.hero-stats .stat:nth-child(2) .stat-number');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const resetBtn = document.getElementById('resetBtn');
+
+  // Assign stable IDs to items
+  items.forEach((item, i) => {
+    const block = item.closest('.block');
+    const blockNum = block ? block.querySelector('.block-number').textContent.trim() : '0';
+    const idx = Array.from(block.querySelectorAll('.item')).indexOf(item);
+    item.dataset.id = `b${blockNum}-${idx}`;
+
+    // Add check indicator
+    const check = document.createElement('div');
+    check.className = 'item-check';
+    item.appendChild(check);
+  });
+
+  // Load state
+  function loadState() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    } catch { return []; }
+  }
+
+  function saveState(checked) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+  }
+
+  // Apply checked state
+  let checkedSet = new Set(loadState());
+
+  function applyState() {
+    items.forEach(item => {
+      item.classList.toggle('checked', checkedSet.has(item.dataset.id));
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = items.length;
+    const checked = checkedSet.size;
+    const pct = total ? (checked / total) * 100 : 0;
+
+    progressBar.style.width = pct + '%';
+    checkedCountEl.textContent = checked;
+    totalCountEl.textContent = total;
+
+    if (heroStatNumber) {
+      heroStatNumber.textContent = checked > 0 ? `${checked}/${total}` : '43';
+    }
+  }
+
+  // Toggle on click
+  items.forEach(item => {
+    item.addEventListener('click', (e) => {
+      // Don't toggle if clicking a link or code
+      if (e.target.closest('a')) return;
+
+      const id = item.dataset.id;
+      if (checkedSet.has(id)) {
+        checkedSet.delete(id);
+      } else {
+        checkedSet.add(id);
+      }
+      saveState([...checkedSet]);
+      applyState();
+    });
+  });
+
+  // Filtering
+  let currentFilter = 'all';
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  function applyFilter() {
+    items.forEach(item => {
+      if (currentFilter === 'all') {
+        item.classList.remove('hidden');
+        return;
+      }
+      const badge = item.querySelector('.item-badge');
+      const type = badge ? badge.textContent.trim().toLowerCase() : '';
+      item.classList.toggle('hidden', type !== currentFilter);
+    });
+  }
+
+  // Reset
+  resetBtn.addEventListener('click', () => {
+    if (!checkedSet.size || confirm('Reset all checkmarks?')) {
+      checkedSet.clear();
+      saveState([]);
+      applyState();
+    }
+  });
+
+  // Init
+  totalCountEl.textContent = items.length;
+  applyState();
+
+  // ===== BLOCK NAVIGATION =====
+  const blockNav = document.getElementById('blockNav');
+  const mobileNav = document.getElementById('mobileNav');
+  const blocks = document.querySelectorAll('.blocks .block[id]');
+  const blocksSection = document.querySelector('.blocks');
+  const navLinks = blockNav.querySelectorAll('.block-nav-item');
+  const mobileLinks = mobileNav.querySelectorAll('.mobile-nav-item');
+
+  // Show/hide desktop nav based on scroll position
+  function updateNavVisibility() {
+    if (!blocksSection) return;
+    const rect = blocksSection.getBoundingClientRect();
+    const inBlocks = rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.3;
+    blockNav.classList.toggle('visible', inBlocks);
+  }
+
+  // Highlight active block
+  function updateActiveBlock() {
+    let activeId = null;
+    blocks.forEach(block => {
+      const rect = block.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.4) {
+        activeId = block.id;
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + activeId);
+    });
+    mobileLinks.forEach(link => {
+      const isActive = link.getAttribute('href') === '#' + activeId;
+      link.classList.toggle('active', isActive);
+      if (isActive) {
+        link.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    updateNavVisibility();
+    updateActiveBlock();
+  }, { passive: true });
+
+  updateNavVisibility();
+  updateActiveBlock();
+})();
+</script>
+
+</body>
+</html>
